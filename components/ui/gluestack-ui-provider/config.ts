@@ -1,8 +1,10 @@
-'use client';
-import { vars } from 'nativewind';
+'use client'
+import { COLORS } from '@/utils/colors.utils'
+import { vars } from 'nativewind'
 
 export const config = {
   light: vars({
+    '--main-color': COLORS.main,
     '--color-primary-0': '179 179 179',
     '--color-primary-50': '153 153 153',
     '--color-primary-100': '128 128 128',
@@ -155,6 +157,7 @@ export const config = {
     '--color-indicator-error': '185 28 28',
   }),
   dark: vars({
+    '--main-color': '#37BF81',
     '--color-primary-0': '166 166 166',
     '--color-primary-50': '175 175 175',
     '--color-primary-100': '186 186 186',
@@ -306,4 +309,4 @@ export const config = {
     '--color-indicator-info': '161 199 245',
     '--color-indicator-error': '232 70 69',
   }),
-};
+}
