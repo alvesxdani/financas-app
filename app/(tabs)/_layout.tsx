@@ -22,7 +22,7 @@ export default function RootLayout() {
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="attach-money" size={24} color={color} />
           ),
-          tabBarLabel: 'Transções',
+          tabBarLabel: 'Transações',
           headerTitle: 'Transações',
         }}
       />
