@@ -1,5 +1,6 @@
 import { GluestackUIProvider } from '@/components/ui/gluestack-ui-provider'
 import '@/global.css'
+import { COLORS } from '@/utils/colors.utils'
 import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
@@ -28,11 +29,11 @@ export default function RootLayout() {
 
   return (
     <GluestackUIProvider mode="light">
+      <StatusBar style="light" backgroundColor={COLORS.main} />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
+        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
       </Stack>
-      <StatusBar style="auto" />
     </GluestackUIProvider>
   )
 }
