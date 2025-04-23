@@ -5,34 +5,50 @@ import {
   FormControlLabel,
   FormControlLabelText,
 } from '@/components/ui/form-control'
-import { Input, InputField } from '@/components/ui/input'
+import { Input, InputField, InputSlot } from '@/components/ui/input'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import DateTimePicker from '@react-native-community/datetimepicker'
 import { useState } from 'react'
+import CurrencyInput from 'react-native-currency-input'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+type CadastroT = {
+  title: string
+  value: number | null
+  date: Date
+  category: string
+}
+
+const initialStateForm: CadastroT = {
+  title: '',
+  value: 0,
+  date: new Date(),
+  category: '',
+}
+
+const initialStateErrors = {
+  title: false,
+  value: false,
+  date: false,
+  category: false,
+}
+
 const Cadastro = () => {
-  const initialStateForm = {
-    title: '',
-    value: '',
-    date: '',
-    category: '',
-  }
-
-  const initialStateErrors = {
-    title: false,
-    value: false,
-    date: false,
-    category: false,
-  }
-
-  const [form, setForm] = useState(initialStateForm)
+  const [form, setForm] = useState<CadastroT>(initialStateForm)
   const [error, setError] = useState(initialStateErrors)
+  const [show, setShow] = useState(false)
 
-  function handleValidate(field: string, value: string) {
-    if (value.trim() === '') {
-      setError((prev) => ({ ...prev, [field]: true }))
+  function handleValidate(field: string, value: any) {
+    setError((prev) => ({ ...prev, [field]: false }))
+
+    if (field === 'value') {
+      if (value < 0.01) {
+        setError((prev) => ({ ...prev, [field]: true }))
+      }
     } else {
-      setError((prev) => ({ ...prev, [field]: false }))
+      if (value.trim() === '' || value === null || value < 1) {
+        setError((prev) => ({ ...prev, [field]: true }))
+      }
     }
   }
 
@@ -45,6 +61,12 @@ const Cadastro = () => {
     if (error.title || error.value || error.date || error.category) {
       return
     }
+  }
+
+  function handleDateChange(event: any, selectedDate: Date | undefined) {
+    const currentDate = selectedDate || form.date
+    setShow(false)
+    setForm({ ...form, date: currentDate })
   }
 
   return (
@@ -76,12 +98,38 @@ const Cadastro = () => {
           </FormControlLabelText>
         </FormControlLabel>
         <Input variant="outline">
-          <InputField
+          <CurrencyInput
             value={form.value}
-            inputMode="decimal"
-            keyboardType="decimal-pad"
-            onChangeText={(text) => setForm({ ...form, value: text })}
+            onChangeValue={(value) => setForm({ ...form, value })}
+            renderTextInput={(props) => <InputField {...props} />}
+            onChange={(e) => handleValidate('value', e.nativeEvent.text)}
+            onBlur={() => handleValidate('value', form.value)}
+            prefix="R$ "
           />
+        </Input>
+        <FormControlError>
+          <MaterialIcons name="error" size={24} color="red" />
+          <FormControlErrorText>Campo obrigatório.</FormControlErrorText>
+        </FormControlError>
+      </FormControl>
+
+      <FormControl isRequired size="sm" isInvalid={error.date} isReadOnly>
+        <FormControlLabel>
+          <FormControlLabelText className="font-semibold">
+            Data
+          </FormControlLabelText>
+        </FormControlLabel>
+        <Input variant="outline" onTouchStart={() => setShow(true)}>
+          {show && (
+            <DateTimePicker value={form.date} onChange={handleDateChange} />
+          )}
+          <InputField
+            value={form.date.toLocaleDateString`pt-BR`}
+            onChange={(e) => handleValidate('date', e.nativeEvent.text)}
+          />
+          <InputSlot>
+            <MaterialIcons name="calendar-today" className="mr-3" size={18} />
+          </InputSlot>
         </Input>
         <FormControlError>
           <MaterialIcons name="error" size={24} color="red" />
