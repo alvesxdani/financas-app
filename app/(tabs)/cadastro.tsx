@@ -1,3 +1,4 @@
+import { Button, ButtonText } from '@/components/ui/button'
 import {
   FormControl,
   FormControlError,
@@ -72,6 +73,7 @@ const Cadastro = () => {
 
     if (error.title || error.value || error.date || error.category) {
       return
+    } else {
     }
   }
 
@@ -172,6 +174,11 @@ const Cadastro = () => {
           <FormControlErrorText>Campo obrigatório.</FormControlErrorText>
         </FormControlError>
       </FormControl>
+
+      <Button action="default" size="xl" className="bg-main p-2 rounded-md">
+        <MaterialIcons name="save" size={24} color="white" />
+        <ButtonText>Salvar</ButtonText>
+      </Button>
     </SafeAreaView>
   )
 }
