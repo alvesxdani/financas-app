@@ -1,10 +1,6 @@
 import { Box } from '@/components/ui/box'
 import { COLORS } from '@/utils/colors.utils'
-import {
-  formatMoney,
-  SET_ICON,
-  SET_ICON_CLASS_COLOR,
-} from '@/utils/index.utils'
+import { formatMoney } from '@/utils/index.utils'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { FlatList, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -55,6 +51,38 @@ const Home = () => {
       categoria: 'alimentacao',
     },
   ]
+
+  const SET_ICON_CLASS_COLOR = (category: string) => {
+    switch (category) {
+      case 'salario':
+        return '!bg-purple-400'
+      case 'educacao':
+        return '!bg-indigo-400'
+      case 'alimentacao':
+        return 'bg-rose-300'
+      case 'contas':
+        return 'bg-amber-300'
+      case 'viagem':
+        return 'bg-blue-400'
+      default:
+        return 'bg-gray-400'
+    }
+  }
+
+  const SET_ICON = (category: string) => {
+    const icons: Record<
+      string,
+      'work' | 'school' | 'fastfood' | 'credit-card' | 'flight'
+    > = {
+      salario: 'work',
+      educacao: 'school',
+      alimentacao: 'fastfood',
+      contas: 'credit-card',
+      viagem: 'flight',
+    }
+
+    return icons[category]
+  }
 
   return (
     <SafeAreaView className="px-2">
