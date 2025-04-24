@@ -23,7 +23,7 @@ export default function TransactionsContextProvider({ children }: any) {
     }
 
     loadTransactions()
-  }, [])
+  }, [transactions])
 
   return (
     <TransactionsContext.Provider value={[transactions, setTransactions]}>
