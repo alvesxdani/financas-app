@@ -13,12 +13,11 @@ import {
   ToastTitle,
   useToast,
 } from '@/components/ui/toast'
+import { TransactionsContext } from '@/contexts/transactions.context'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Picker } from '@react-native-picker/picker'
-import { useFocusEffect } from '@react-navigation/native'
-import { useCallback, useState } from 'react'
+import { useContext, useState } from 'react'
 import { KeyboardAvoidingView, ScrollView, View } from 'react-native'
 import CurrencyInput from 'react-native-currency-input'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -48,6 +47,8 @@ const Cadastro = () => {
   const [form, setForm] = useState<RegisterT>(initialStateForm)
   const [error, setError] = useState(initialStateErrors)
   const [show, setShow] = useState(false)
+
+  const [transactions, setTransactions] = useContext(TransactionsContext)
 
   const toast = useToast()
 
@@ -80,20 +81,15 @@ const Cadastro = () => {
   }
 
   function handleDateChange(event: any, selectedDate: Date | undefined) {
-    const currentDate = selectedDate || form.date
+    const currentDate = selectedDate ?? form.date // Usa a data selecionada ou mantém a atual
     setShow(false)
     setForm({ ...form, date: currentDate })
+    handleValidate('date', currentDate)
   }
 
   async function setData(form: RegisterT) {
-    const data = await AsyncStorage.getItem('data')
-    const parsedData = data ? JSON.parse(data) : []
-    const newData = [...parsedData, form]
-    try {
-      await AsyncStorage.setItem('data', JSON.stringify(newData))
-    } catch (error) {
-      console.log(error)
-    }
+    setTransactions((prev: any) => [...prev, form])
+    console.log(transactions)
   }
 
   function handleSelectChange(value: string) {
@@ -136,15 +132,6 @@ const Cadastro = () => {
       setForm(initialStateForm)
     }
   }
-
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        setForm(initialStateForm)
-        setError(initialStateErrors)
-      }
-    }, []),
-  )
 
   return (
     <SafeAreaView>
@@ -209,6 +196,7 @@ const Cadastro = () => {
               <InputField
                 value={form.date.toLocaleDateString`pt-BR`}
                 onChange={(e) => handleValidate('date', e.nativeEvent.text)}
+                editable={false}
               />
               <InputSlot>
                 <MaterialIcons
