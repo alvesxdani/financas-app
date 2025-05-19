@@ -71,8 +71,8 @@ const Home = () => {
   return (
     <View className="px-2">
       {!transactions.length && (
-        <Text className="text-center text-neutral-400">
-          Nenhuma transação encontrada
+        <Text className="text-center text-neutral-400 py-4">
+          Nenhuma transação encontrada.
         </Text>
       )}
       {transactions.length > 0 && (
