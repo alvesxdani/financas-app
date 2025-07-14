@@ -145,6 +145,7 @@ const Cadastro = () => {
             </FormControlLabel>
             <Input variant="outline" className="rounded-lg">
               <InputField
+                className="p-2"
                 value={form.title}
                 onChangeText={(text) => setForm({ ...form, title: text })}
                 onChange={(e) => handleValidate('title', e.nativeEvent.text)}
@@ -165,6 +166,7 @@ const Cadastro = () => {
             </FormControlLabel>
             <Input variant="outline" className="rounded-lg">
               <CurrencyInput
+                className="p-2"
                 value={form.value}
                 onChangeValue={(value) => setForm({ ...form, value })}
                 renderTextInput={(props) => <InputField {...props} />}
@@ -194,6 +196,7 @@ const Cadastro = () => {
                 <DateTimePicker value={form.date} onChange={handleDateChange} />
               )}
               <InputField
+                className="p-2"
                 value={form.date.toLocaleDateString`pt-BR`}
                 onChange={(e) => handleValidate('date', e.nativeEvent.text)}
                 editable={false}
@@ -220,6 +223,7 @@ const Cadastro = () => {
             </FormControlLabel>
             <View className="border border-neutral-300 rounded-lg">
               <Picker
+                className="p-2"
                 mode="dropdown"
                 placeholder="Selecione uma categoria"
                 selectedValue={form.category}
